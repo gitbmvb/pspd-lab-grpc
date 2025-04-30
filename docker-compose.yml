@@ -1,0 +1,16 @@
+services:
+  llm_server:
+    build:
+      context: .
+      dockerfile: backend/llm_server/Dockerfile
+      args:
+        OLLAMA_MODEL: ${OLLAMA_MODEL}
+    container_name: llm_server
+    env_file: .env
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
