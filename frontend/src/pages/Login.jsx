@@ -5,10 +5,22 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Email:', email);
-        console.log('Senha:', senha);
+        
+        const response = await fetch('http://localhost:8080/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, senha }),
+        });
+
+        if (response.ok) {
+            alert('Login bem-sucedido!');
+        } else {
+            alert('Invalid credentials. Please try again.');
+        }
     };
 
     return (
