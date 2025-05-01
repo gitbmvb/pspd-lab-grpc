@@ -12,6 +12,8 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/DML.sql:/docker-entrypoint-initdb.d/DML.sql:ro
+    networks:
+      - pspdnet
 
   llm_server:
     build:
@@ -26,6 +28,8 @@ services:
       - ollama_data:/root/.ollama
     depends_on:
       - db
+    networks:
+      - pspdnet
 
   backend:
     container_name: pspd_backend
@@ -43,6 +47,8 @@ services:
       - DB_USER=admin
       - DB_PASSWORD=admin
       - DB_NAME=pspdlabs
+    networks:
+      - pspdnet
 
   frontend:
     container_name: pspd_frontend
@@ -60,7 +66,13 @@ services:
     depends_on:
       - backend
       - llm_server
+    networks:
+      - pspdnet
 
 volumes:
   ollama_data:
   pgdata:
+
+networks:
+  pspdnet:
+    driver: bridge

@@ -13,6 +13,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/login", handlers.Login)
+	mux.HandleFunc("/api/ask", handlers.AskHandler)
 
 	handler := cors.Default().Handler(mux)
 	log.Println("Starting server on :8080")
