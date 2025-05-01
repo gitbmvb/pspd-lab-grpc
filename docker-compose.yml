@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: pspd_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: pspdlabs
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/DML.sql:/docker-entrypoint-initdb.d/DML.sql:ro
+
+  llm_server:
+    build:
+      context: .
+      dockerfile: llm_server/Dockerfile
+      args:
+        OLLAMA_MODEL: llama3.2
+    container_name: llm_server
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    depends_on:
+      - db
+
+  backend:
+    container_name: pspd_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+      - DB_NAME=pspdlabs
+
+  frontend:
+    container_name: pspd_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev
+    depends_on:
+      - backend
+      - llm_server
+
+volumes:
+  ollama_data:
+  pgdata:

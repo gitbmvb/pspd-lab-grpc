@@ -2,15 +2,36 @@ package db
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"log"
+	"os"
 )
 
-var DB * sql.DB
+var DB *sql.DB
 
 func Init() {
-	var err error
-	connStr := "host=localhost port=5432 user=admin password=admin dbname=pspd sslmode=disable"
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found or failed to load it")
+	}
+
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	sslmode := os.Getenv("DB_SSLMODE")
+	if sslmode == "" {
+		sslmode = "disable"
+	}
+
+	connStr := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		host, port, user, password, dbname, sslmode,
+	)
+
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal("Error opening database: ", err)
@@ -19,6 +40,6 @@ func Init() {
 	if err = DB.Ping(); err != nil {
 		log.Fatal("Error connecting to database: ", err)
 	}
-	
+
 	log.Println("Connected to database")
 }

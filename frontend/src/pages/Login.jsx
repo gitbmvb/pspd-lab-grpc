@@ -3,7 +3,7 @@ import './Login.css';
 
 const Login = () => {
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [password, setpassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -13,7 +13,7 @@ const Login = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, senha }),
+            body: JSON.stringify({ email, password }),
         });
 
         if (response.ok) {
@@ -47,9 +47,9 @@ const Login = () => {
                     />
                     <input
                         type="password"
-                        placeholder="Senha"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
+                        placeholder="password"
+                        value={password}
+                        onChange={(e) => setpassword(e.target.value)}
                         required
                     />
                     <button type="submit">Entrar</button>

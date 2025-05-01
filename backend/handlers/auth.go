@@ -9,7 +9,7 @@ import (
 
 type LoginRequest struct {
 	Email string `json:"email"`
-	Password string `json:"senha"`
+	Password string `json:"password"`
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +20,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var exists bool
-	err := db.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM usuario WHERE email = $1 AND senha = $2)", loginRequest.Email, loginRequest.Password).Scan(&exists)
+	err := db.DB.QueryRow("SELECT EXISTS (SELECT 1 FROM \"User\" WHERE email = $1 AND password = $2)", loginRequest.Email, loginRequest.Password).Scan(&exists)
 	if err != nil || !exists {
 		http.Error(w, "Unathorized", http.StatusUnauthorized)
 		return
