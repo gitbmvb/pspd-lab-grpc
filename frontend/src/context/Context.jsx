@@ -10,12 +10,6 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
     
-    const delayPara = (index, nextWord) => {
-        setTimeout(() => {
-            setResultData((prev) => prev + nextWord);
-        }, 75 * index);
-    }
-    
     const onSent = async (prompt) => {
         setInput("");
         setResultData("")
@@ -31,11 +25,7 @@ const ContextProvider = (props) => {
             body: JSON.stringify({ input }),
         });
 
-        let data = await response.json().response.split(" ");
-        for (let i = 0; i < data.length; i++) {
-            delayPara(i, data[i] + " ");
-        }
-
+        const data = await response.json();
         setResultData(data.response);
         setLoading(false);
 
