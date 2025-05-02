@@ -30,6 +30,8 @@ services:
       - db
     networks:
       - pspdnet
+    # Descomente para o docker rodar com GPU da NVIDIA
+    # runtime: nvidia
 
   backend:
     container_name: pspd_backend
