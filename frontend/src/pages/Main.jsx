@@ -3,6 +3,8 @@ import './Main.css'
 import { assets } from '../assets/assets'
 import { Context } from '../context/Context'
 import PromptBox from '../components/PromptBox/PromptBox'
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
 
 const Main = () => {
     const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = useContext(Context)
@@ -28,15 +30,17 @@ const Main = () => {
                         </div>
                         <div className="result-data">
                             <img src={assets.gemini_icon} alt="" />
-                            {loading ?
-                            <div className="loader">
-                                <hr />
-                                <hr />
-                                <hr />
+                            <div className="markdown-container">
+                                {loading ? (
+                                    <div className="loader">
+                                        <hr />
+                                        <hr />
+                                        <hr />
+                                    </div>
+                                ) : (
+                                    <Markdown remarkPlugins={[remarkGfm]}>{resultData}</Markdown>
+                                )}
                             </div>
-                            :
-                            <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
-                        }
                         </div>
                     </div>
                 }
