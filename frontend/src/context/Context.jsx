@@ -9,9 +9,10 @@ const ContextProvider = (props) => {
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
-
-
+    
+    
     const onSent = async (prompt) => {
+        setInput("");
         setResultData("")
         setLoading(true)
         setShowResult(true)
@@ -28,7 +29,6 @@ const ContextProvider = (props) => {
         const data = await response.json();
         setResultData(data.response);
         setLoading(false);
-        setInput("");
 
     };
 

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import './Main.css'
 import { assets } from '../assets/assets'
 import { Context } from '../context/Context'
+import PromptBox from '../components/PromptBox/PromptBox'
 
 const Main = () => {
     const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = useContext(Context)
@@ -40,12 +41,11 @@ const Main = () => {
                     </div>
                 }
                 <div className="main-bottom">
-                    <div className="search-box">
-                        <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Pergunte alguma coisa' />
-                        <div>
-                            <img onClick={() => onSent()} src={assets.send_icon} alt="" />
-                        </div>
-                    </div>
+                    <PromptBox
+                        onSent={onSent}
+                        setInput={setInput}
+                        input={input}
+                    />
                     <p className="bottom-info">UnB/FGA@2025.1</p>
                 </div>
             </div>
