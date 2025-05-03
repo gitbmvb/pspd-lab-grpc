@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = ".;grpc_services";
+
+service DataService {
+  // User
+  rpc CreateUser (UserRequest) returns (User) {}
+  rpc GetUser (Email) returns (User) {}
+  rpc UpdateUser (UserRequest) returns (User) {}
+  rpc DeleteUser (Email) returns (google.protobuf.Empty) {}
+  rpc GetUsers (google.protobuf.Empty) returns (Users) {}
+
+  // Chat
+  rpc CreateChat (ChatRequest) returns (Chat) {}
+  rpc GetChat (ChatData) returns (Chat) {}
+  rpc UpdateChat (ChatRequest) returns (Chat) {}
+  rpc DeleteChat (ChatId) returns (google.protobuf.Empty) {}
+  rpc GetChats (Email) returns (Chats) {}
+
+  // Message
+  rpc CreateMessage (MessageRequest) returns (Message) {}
+  rpc GetMessage (MessageData) returns (Message) {}
+  rpc UpdateMessage (MessageRequest) returns (Message) {}
+  rpc DeleteMessage (MessageId) returns (google.protobuf.Empty) {}
+  rpc GetMessages (ChatId) returns (Messages) {}
+}
+
+message UserRequest {
+  string email = 1;
+  string name = 2;
+  string password = 3;
+}
+
+message ChatRequest {
+  int64 chat_id = 1;
+  string topic = 2;
+  string email = 3;
+}
+
+message MessageRequest {
+  int64 message_id = 1;
+  string question = 2;
+  string answer = 3;
+  int64 chat_id = 4;
+}
+
+message Email {
+  string email = 1;
+}
+
+message MessageId {
+  int64 message_id = 1;
+}
+
+message ChatId {
+  int64 chat_id = 1;
+}
+
+message ChatData {
+  int64 chat_id = 1 [json_name = "chat_id"];
+  string email = 2;
+}
+
+message MessageData {
+  int64 message_id = 1;
+  int64 chat_id = 2;
+}
+
+message User {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message Users {
+  repeated User users = 1;
+}
+
+message Chat {
+  int64 chat_id = 1;
+  string topic = 2;
+  google.protobuf.Timestamp created_at = 3;
+  string email = 4;
+}
+
+message Chats {
+  repeated Chat chats = 1;
+}
+
+message Message {
+  int64 message_id = 1;
+  string question = 2;
+  string answer = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  int64 chat_id = 5;
+}
+
+message Messages {
+  repeated Message messages = 1;
+}
