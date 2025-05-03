@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
+	"bufio"
 	"net/http"
 )
 
@@ -22,7 +22,7 @@ func AskHandler(w http.ResponseWriter, r *http.Request) {
 	reqBody := map[string]interface{}{
 		"model":  "llama3.2",
 		"prompt": payload.Input,
-		"stream": false,
+		"stream": true,
 	}
 
 	jsonData, err := json.Marshal(reqBody)
@@ -40,19 +40,39 @@ func AskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		bodyBytes, _ := io.ReadAll(resp.Body)
-		fmt.Println("Model returned error:", string(bodyBytes))
-		http.Error(w, "Model returned error", resp.StatusCode)
+	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming unsupported", http.StatusInternalServerError)
 		return
 	}
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, "Failed to read model response", http.StatusInternalServerError)
-		return
-	}
+	reader := bufio.NewReader(resp.Body)
+	for {
+		line, err := reader.ReadBytes('\n')
+		if err != nil {
+			break
+		}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(body)
+		if len(bytes.TrimSpace(line)) == 0 {
+			continue
+		}
+
+		var chunk map[string]interface{}
+		if err := json.Unmarshal(line, &chunk); err != nil {
+			continue
+		}
+
+		if respText, ok := chunk["response"].(string); ok {
+			w.Write([]byte(respText))
+			flusher.Flush()
+		}
+
+		if done, ok := chunk["done"].(bool); ok && done {
+			break
+		}
+	}
 }
