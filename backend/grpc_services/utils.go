@@ -20,11 +20,18 @@ func Init() {
 	conn, err := grpc.Dial(
 		"localhost:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock(),
 	)
 	if err != nil {
 		log.Fatalf("Failed to connect to gRPC server: %v", err)
 	}
+
+	if conn.GetState().String() != "READY" {
+		log.Fatalf("gRPC connection is not ready, current state: %v", conn.GetState())
+	}
+
 	Client = NewDataServiceClient(conn)
+	log.Println("Successfully connected to gRPC server")
 }
 
 func SendJSONResponse(w http.ResponseWriter, statusCode int, resp Response) {

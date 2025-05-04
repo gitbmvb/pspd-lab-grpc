@@ -11,14 +11,14 @@ import (
 	"time"
 )
 
-func GetChats(w http.ResponseWriter, r *http.Request) {
+func ListChats(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	email := vars["email"]
 
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetChats(ctx, &grpc_services.Email{Email: email})
+	resp, err := grpc_services.Client.ListChats(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
@@ -35,9 +35,9 @@ func GetChats(w http.ResponseWriter, r *http.Request) {
 
 func GetChat(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	chatID := vars["chat_id"]
+	idChat := vars["idChat"]
 
-	chatIDInt, err := strconv.ParseInt(chatID, 10, 64)
+	idChatInt, err := strconv.ParseInt(idChat, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -49,7 +49,7 @@ func GetChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetChat(ctx, &grpc_services.ChatData{ChatId: chatIDInt})
+	resp, err := grpc_services.Client.GetChat(ctx, &grpc_services.ChatReadRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusNotFound, grpc_services.Response{
 			Status:  "error",
@@ -77,10 +77,10 @@ func CreateChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.CreateChat(ctx, &grpc_services.ChatRequest{
-		ChatId: chatReq.ChatID,
-		Topic:  chatReq.Topic,
-		Email:  chatReq.Email,
+	resp, err := grpc_services.Client.CreateChat(ctx, &grpc_services.ChatCreateRequest{
+		IdChat:   chatReq.ChatID,
+		Subject:  chatReq.Subject,
+		Email:    chatReq.Email,
 	})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
@@ -98,9 +98,9 @@ func CreateChat(w http.ResponseWriter, r *http.Request) {
 
 func UpdateChat(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	chatID := vars["chat_id"]
+	idChat := vars["idChat"]
 
-	chatIDInt, err := strconv.ParseInt(chatID, 10, 64)
+	idChatInt, err := strconv.ParseInt(idChat, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -121,10 +121,9 @@ func UpdateChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.UpdateChat(ctx, &grpc_services.ChatRequest{
-		ChatId: chatIDInt,
-		Topic:  chatReq.Topic,
-		Email:  chatReq.Email,
+	resp, err := grpc_services.Client.UpdateChat(ctx, &grpc_services.ChatUpdateRequest{
+		IdChat:   idChatInt,
+		Subject:  chatReq.Subject,
 	})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
@@ -142,9 +141,9 @@ func UpdateChat(w http.ResponseWriter, r *http.Request) {
 
 func DeleteChat(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	chatID := vars["chat_id"]
+	idChat := vars["idChat"]
 
-	chatIDInt, err := strconv.ParseInt(chatID, 10, 64)
+	idChatInt, err := strconv.ParseInt(idChat, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -156,7 +155,7 @@ func DeleteChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err = grpc_services.Client.DeleteChat(ctx, &grpc_services.ChatId{ChatId: chatIDInt})
+	_, err = grpc_services.Client.DeleteChat(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",

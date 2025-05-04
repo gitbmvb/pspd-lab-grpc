@@ -11,11 +11,11 @@ import (
 	"time"
 )
 
-func GetMessages(w http.ResponseWriter, r *http.Request) {
+func ListMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	chatID := vars["chat_id"]
+	idChat := vars["idChat"]
 
-	chatIDInt, err := strconv.ParseInt(chatID, 10, 64)
+	idChatInt, err := strconv.ParseInt(idChat, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -27,7 +27,7 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetMessages(ctx, &grpc_services.ChatId{ChatId: chatIDInt})
+	resp, err := grpc_services.Client.ListMessages(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
@@ -44,9 +44,9 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 
 func GetMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	messageID := vars["message_id"]
+	idMessage := vars["idMessage"]
 
-	messageIDInt, err := strconv.ParseInt(messageID, 10, 64)
+	idMessageInt, err := strconv.ParseInt(idMessage, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -58,7 +58,7 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetMessage(ctx, &grpc_services.MessageData{MessageId: messageIDInt})
+	resp, err := grpc_services.Client.GetMessage(ctx, &grpc_services.MessageReadRequest{IdMessage: idMessageInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusNotFound, grpc_services.Response{
 			Status:  "error",
@@ -86,11 +86,9 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.CreateMessage(ctx, &grpc_services.MessageRequest{
-		MessageId: msgReq.MessageID,
-		Question:  msgReq.Question,
-		Answer:    msgReq.Answer,
-		ChatId:    msgReq.ChatID,
+	resp, err := grpc_services.Client.CreateMessage(ctx, &grpc_services.MessageCreateRequest{
+		Content:   msgReq.Content,
+		IdChat:    msgReq.ChatID,
 	})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
@@ -108,9 +106,9 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 
 func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	messageID := vars["message_id"]
+	idMessage := vars["idMessage"]
 
-	messageIDInt, err := strconv.ParseInt(messageID, 10, 64)
+	idMessageInt, err := strconv.ParseInt(idMessage, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -131,11 +129,9 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.UpdateMessage(ctx, &grpc_services.MessageRequest{
-		MessageId: messageIDInt,
-		Question:  msgReq.Question,
-		Answer:    msgReq.Answer,
-		ChatId:    msgReq.ChatID,
+	resp, err := grpc_services.Client.UpdateMessage(ctx, &grpc_services.MessageUpdateRequest{
+		IdMessage: idMessageInt,
+		Content:   msgReq.Content,
 	})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
@@ -153,9 +149,9 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 
 func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	messageID := vars["message_id"]
+	idMessage := vars["idMessage"]
 
-	messageIDInt, err := strconv.ParseInt(messageID, 10, 64)
+	idMessageInt, err := strconv.ParseInt(idMessage, 10, 64)
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
 			Status:  "error",
@@ -167,7 +163,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err = grpc_services.Client.DeleteMessage(ctx, &grpc_services.MessageId{MessageId: messageIDInt})
+	_, err = grpc_services.Client.DeleteMessage(ctx, &grpc_services.MessageDeleteRequest{IdMessage: idMessageInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
