@@ -35,6 +35,11 @@ class DataServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.LoginUser = channel.unary_unary(
+                '/DataService/LoginUser',
+                request_serializer=grpc__services_dot_service__pb2.UserLoginRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.CreateUser = channel.unary_unary(
                 '/DataService/CreateUser',
                 request_serializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
@@ -115,9 +120,15 @@ class DataServiceStub(object):
 class DataServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CreateUser(self, request, context):
+    def LoginUser(self, request, context):
         """User
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -211,6 +222,11 @@ class DataServiceServicer(object):
 
 def add_DataServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'LoginUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.LoginUser,
+                    request_deserializer=grpc__services_dot_service__pb2.UserLoginRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
                     request_deserializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.FromString,
@@ -296,6 +312,33 @@ def add_DataServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class DataService(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def LoginUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/DataService/LoginUser',
+            grpc__services_dot_service__pb2.UserLoginRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
 
     @staticmethod
     def CreateUser(request,
