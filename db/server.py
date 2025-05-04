@@ -19,6 +19,23 @@ class DataService(service_pb2_grpc.DataServiceServicer):
 
     # ========== User CRUD ==========
 
+    def LoginUser(self, request, context):
+        with self.conn.cursor() as cursor:
+            try:
+                print(f"gRPC|db - Received LoginUser request - email: {request.email}")
+
+                cursor.execute(
+                    "SELECT 1 FROM \"USER\" WHERE email = %s AND \"password\" = %s LIMIT 1",
+                    (request.email, request.password)
+                )
+                result = cursor.fetchone()
+
+                if not result:
+                    context.abort(grpc.StatusCode.NOT_FOUND, "User not found or invalid credentials")
+                return empty_pb2.Empty()
+            except psycopg2.Error as e:
+                context.abort(grpc.StatusCode.INTERNAL, f"Database error: {str(e)}")
+
     def CreateUser(self, request, context):
         with self.conn.cursor() as cursor:
             try:

@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	DataService_LoginUser_FullMethodName     = "/DataService/LoginUser"
 	DataService_CreateUser_FullMethodName    = "/DataService/CreateUser"
 	DataService_GetUser_FullMethodName       = "/DataService/GetUser"
 	DataService_UpdateUser_FullMethodName    = "/DataService/UpdateUser"
@@ -42,6 +43,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataServiceClient interface {
 	// User
+	LoginUser(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	CreateUser(ctx context.Context, in *UserCreateUpdateRequest, opts ...grpc.CallOption) (*User, error)
 	GetUser(ctx context.Context, in *UserReadDeleteRequest, opts ...grpc.CallOption) (*User, error)
 	UpdateUser(ctx context.Context, in *UserCreateUpdateRequest, opts ...grpc.CallOption) (*User, error)
@@ -67,6 +69,16 @@ type dataServiceClient struct {
 
 func NewDataServiceClient(cc grpc.ClientConnInterface) DataServiceClient {
 	return &dataServiceClient{cc}
+}
+
+func (c *dataServiceClient) LoginUser(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, DataService_LoginUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *dataServiceClient) CreateUser(ctx context.Context, in *UserCreateUpdateRequest, opts ...grpc.CallOption) (*User, error) {
@@ -224,6 +236,7 @@ func (c *dataServiceClient) ListMessages(ctx context.Context, in *ChatDeleteRequ
 // for forward compatibility.
 type DataServiceServer interface {
 	// User
+	LoginUser(context.Context, *UserLoginRequest) (*empty.Empty, error)
 	CreateUser(context.Context, *UserCreateUpdateRequest) (*User, error)
 	GetUser(context.Context, *UserReadDeleteRequest) (*User, error)
 	UpdateUser(context.Context, *UserCreateUpdateRequest) (*User, error)
@@ -251,6 +264,9 @@ type DataServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedDataServiceServer struct{}
 
+func (UnimplementedDataServiceServer) LoginUser(context.Context, *UserLoginRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
 func (UnimplementedDataServiceServer) CreateUser(context.Context, *UserCreateUpdateRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
@@ -315,6 +331,24 @@ func RegisterDataServiceServer(s grpc.ServiceRegistrar, srv DataServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&DataService_ServiceDesc, srv)
+}
+
+func _DataService_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataServiceServer).LoginUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataService_LoginUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataServiceServer).LoginUser(ctx, req.(*UserLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _DataService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -594,6 +628,10 @@ var DataService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "DataService",
 	HandlerType: (*DataServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "LoginUser",
+			Handler:    _DataService_LoginUser_Handler,
+		},
 		{
 			MethodName: "CreateUser",
 			Handler:    _DataService_CreateUser_Handler,

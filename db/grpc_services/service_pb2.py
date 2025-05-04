@@ -26,7 +26,7 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1bgrpc_services/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"H\n\x17UserCreateUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"&\n\x15UserReadDeleteRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"5\n\x04User\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"\x1d\n\x05Users\x12\x14\n\x05users\x18\x01 \x03(\x0b\x32\x05.User\"C\n\x11\x43hatCreateRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"4\n\x11\x43hatUpdateRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\"#\n\x11\x43hatDeleteRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\"0\n\x0f\x43hatReadRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\"e\n\x04\x43hat\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12-\n\tstartDate\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"\x1d\n\x05\x43hats\x12\x14\n\x05\x63hats\x18\x01 \x03(\x0b\x32\x05.Chat\"7\n\x14MessageCreateRequest\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x0e\n\x06idChat\x18\x02 \x01(\x03\"7\n\x12MessageReadRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0e\n\x06idChat\x18\x02 \x01(\x03\":\n\x14MessageUpdateRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\")\n\x14MessageDeleteRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\"l\n\x07Message\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12-\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06idChat\x18\x04 \x01(\x03\"&\n\x08Messages\x12\x1a\n\x08messages\x18\x01 \x03(\x0b\x32\x08.Message2\xfb\x05\n\x0b\x44\x61taService\x12/\n\nCreateUser\x12\x18.UserCreateUpdateRequest\x1a\x05.User\"\x00\x12*\n\x07GetUser\x12\x16.UserReadDeleteRequest\x1a\x05.User\"\x00\x12/\n\nUpdateUser\x12\x18.UserCreateUpdateRequest\x1a\x05.User\"\x00\x12>\n\nDeleteUser\x12\x16.UserReadDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12-\n\tListUsers\x12\x16.google.protobuf.Empty\x1a\x06.Users\"\x00\x12)\n\nCreateChat\x12\x12.ChatCreateRequest\x1a\x05.Chat\"\x00\x12$\n\x07GetChat\x12\x10.ChatReadRequest\x1a\x05.Chat\"\x00\x12)\n\nUpdateChat\x12\x12.ChatUpdateRequest\x1a\x05.Chat\"\x00\x12:\n\nDeleteChat\x12\x12.ChatDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12-\n\tListChats\x12\x16.UserReadDeleteRequest\x1a\x06.Chats\"\x00\x12\x32\n\rCreateMessage\x12\x15.MessageCreateRequest\x1a\x08.Message\"\x00\x12-\n\nGetMessage\x12\x13.MessageReadRequest\x1a\x08.Message\"\x00\x12\x32\n\rUpdateMessage\x12\x15.MessageUpdateRequest\x1a\x08.Message\"\x00\x12@\n\rDeleteMessage\x12\x15.MessageDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12/\n\x0cListMessages\x12\x12.ChatDeleteRequest\x1a\t.Messages\"\x00\x42\x11Z\x0f.;grpc_servicesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1bgrpc_services/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"H\n\x17UserCreateUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"&\n\x15UserReadDeleteRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"3\n\x10UserLoginRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"5\n\x04User\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"\x1d\n\x05Users\x12\x14\n\x05users\x18\x01 \x03(\x0b\x32\x05.User\"C\n\x11\x43hatCreateRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"4\n\x11\x43hatUpdateRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\"#\n\x11\x43hatDeleteRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\"0\n\x0f\x43hatReadRequest\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\"e\n\x04\x43hat\x12\x0e\n\x06idChat\x18\x01 \x01(\x03\x12\x0f\n\x07subject\x18\x02 \x01(\t\x12-\n\tstartDate\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"\x1d\n\x05\x43hats\x12\x14\n\x05\x63hats\x18\x01 \x03(\x0b\x32\x05.Chat\"7\n\x14MessageCreateRequest\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x0e\n\x06idChat\x18\x02 \x01(\x03\"7\n\x12MessageReadRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0e\n\x06idChat\x18\x02 \x01(\x03\":\n\x14MessageUpdateRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\")\n\x14MessageDeleteRequest\x12\x11\n\tidMessage\x18\x01 \x01(\x03\"l\n\x07Message\x12\x11\n\tidMessage\x18\x01 \x01(\x03\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12-\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06idChat\x18\x04 \x01(\x03\"&\n\x08Messages\x12\x1a\n\x08messages\x18\x01 \x03(\x0b\x32\x08.Message2\xb5\x06\n\x0b\x44\x61taService\x12\x38\n\tLoginUser\x12\x11.UserLoginRequest\x1a\x16.google.protobuf.Empty\"\x00\x12/\n\nCreateUser\x12\x18.UserCreateUpdateRequest\x1a\x05.User\"\x00\x12*\n\x07GetUser\x12\x16.UserReadDeleteRequest\x1a\x05.User\"\x00\x12/\n\nUpdateUser\x12\x18.UserCreateUpdateRequest\x1a\x05.User\"\x00\x12>\n\nDeleteUser\x12\x16.UserReadDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12-\n\tListUsers\x12\x16.google.protobuf.Empty\x1a\x06.Users\"\x00\x12)\n\nCreateChat\x12\x12.ChatCreateRequest\x1a\x05.Chat\"\x00\x12$\n\x07GetChat\x12\x10.ChatReadRequest\x1a\x05.Chat\"\x00\x12)\n\nUpdateChat\x12\x12.ChatUpdateRequest\x1a\x05.Chat\"\x00\x12:\n\nDeleteChat\x12\x12.ChatDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12-\n\tListChats\x12\x16.UserReadDeleteRequest\x1a\x06.Chats\"\x00\x12\x32\n\rCreateMessage\x12\x15.MessageCreateRequest\x1a\x08.Message\"\x00\x12-\n\nGetMessage\x12\x13.MessageReadRequest\x1a\x08.Message\"\x00\x12\x32\n\rUpdateMessage\x12\x15.MessageUpdateRequest\x1a\x08.Message\"\x00\x12@\n\rDeleteMessage\x12\x15.MessageDeleteRequest\x1a\x16.google.protobuf.Empty\"\x00\x12/\n\x0cListMessages\x12\x12.ChatDeleteRequest\x1a\t.Messages\"\x00\x42\x11Z\x0f.;grpc_servicesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,34 +38,36 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_USERCREATEUPDATEREQUEST']._serialized_end=165
   _globals['_USERREADDELETEREQUEST']._serialized_start=167
   _globals['_USERREADDELETEREQUEST']._serialized_end=205
-  _globals['_USER']._serialized_start=207
-  _globals['_USER']._serialized_end=260
-  _globals['_USERS']._serialized_start=262
-  _globals['_USERS']._serialized_end=291
-  _globals['_CHATCREATEREQUEST']._serialized_start=293
-  _globals['_CHATCREATEREQUEST']._serialized_end=360
-  _globals['_CHATUPDATEREQUEST']._serialized_start=362
-  _globals['_CHATUPDATEREQUEST']._serialized_end=414
-  _globals['_CHATDELETEREQUEST']._serialized_start=416
-  _globals['_CHATDELETEREQUEST']._serialized_end=451
-  _globals['_CHATREADREQUEST']._serialized_start=453
-  _globals['_CHATREADREQUEST']._serialized_end=501
-  _globals['_CHAT']._serialized_start=503
-  _globals['_CHAT']._serialized_end=604
-  _globals['_CHATS']._serialized_start=606
-  _globals['_CHATS']._serialized_end=635
-  _globals['_MESSAGECREATEREQUEST']._serialized_start=637
-  _globals['_MESSAGECREATEREQUEST']._serialized_end=692
-  _globals['_MESSAGEREADREQUEST']._serialized_start=694
-  _globals['_MESSAGEREADREQUEST']._serialized_end=749
-  _globals['_MESSAGEUPDATEREQUEST']._serialized_start=751
-  _globals['_MESSAGEUPDATEREQUEST']._serialized_end=809
-  _globals['_MESSAGEDELETEREQUEST']._serialized_start=811
-  _globals['_MESSAGEDELETEREQUEST']._serialized_end=852
-  _globals['_MESSAGE']._serialized_start=854
-  _globals['_MESSAGE']._serialized_end=962
-  _globals['_MESSAGES']._serialized_start=964
-  _globals['_MESSAGES']._serialized_end=1002
-  _globals['_DATASERVICE']._serialized_start=1005
-  _globals['_DATASERVICE']._serialized_end=1768
+  _globals['_USERLOGINREQUEST']._serialized_start=207
+  _globals['_USERLOGINREQUEST']._serialized_end=258
+  _globals['_USER']._serialized_start=260
+  _globals['_USER']._serialized_end=313
+  _globals['_USERS']._serialized_start=315
+  _globals['_USERS']._serialized_end=344
+  _globals['_CHATCREATEREQUEST']._serialized_start=346
+  _globals['_CHATCREATEREQUEST']._serialized_end=413
+  _globals['_CHATUPDATEREQUEST']._serialized_start=415
+  _globals['_CHATUPDATEREQUEST']._serialized_end=467
+  _globals['_CHATDELETEREQUEST']._serialized_start=469
+  _globals['_CHATDELETEREQUEST']._serialized_end=504
+  _globals['_CHATREADREQUEST']._serialized_start=506
+  _globals['_CHATREADREQUEST']._serialized_end=554
+  _globals['_CHAT']._serialized_start=556
+  _globals['_CHAT']._serialized_end=657
+  _globals['_CHATS']._serialized_start=659
+  _globals['_CHATS']._serialized_end=688
+  _globals['_MESSAGECREATEREQUEST']._serialized_start=690
+  _globals['_MESSAGECREATEREQUEST']._serialized_end=745
+  _globals['_MESSAGEREADREQUEST']._serialized_start=747
+  _globals['_MESSAGEREADREQUEST']._serialized_end=802
+  _globals['_MESSAGEUPDATEREQUEST']._serialized_start=804
+  _globals['_MESSAGEUPDATEREQUEST']._serialized_end=862
+  _globals['_MESSAGEDELETEREQUEST']._serialized_start=864
+  _globals['_MESSAGEDELETEREQUEST']._serialized_end=905
+  _globals['_MESSAGE']._serialized_start=907
+  _globals['_MESSAGE']._serialized_end=1015
+  _globals['_MESSAGES']._serialized_start=1017
+  _globals['_MESSAGES']._serialized_end=1055
+  _globals['_DATASERVICE']._serialized_start=1058
+  _globals['_DATASERVICE']._serialized_end=1879
 # @@protoc_insertion_point(module_scope)

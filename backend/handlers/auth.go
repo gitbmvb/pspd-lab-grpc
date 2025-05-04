@@ -1,32 +1,37 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
-	"log"
 	"net/http"
-	"backend/db"
+	"time"
+
+	"backend/grpc_services"
 )
 
-type LoginRequest struct {
-	Email string `json:"email"`
-	Password string `json:"password"`
-}
-
 func Login(w http.ResponseWriter, r *http.Request) {
-	var loginRequest LoginRequest
+	var loginRequest struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
 	if err := json.NewDecoder(r.Body).Decode(&loginRequest); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	var exists bool
-	err := db.DB.QueryRow("SELECT EXISTS (SELECT 1 FROM \"User\" WHERE email = $1 AND password = $2)", loginRequest.Email, loginRequest.Password).Scan(&exists)
-	if err != nil || !exists {
-		http.Error(w, "Unathorized", http.StatusUnauthorized)
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+
+	_, err := grpc_services.Client.LoginUser(ctx, &grpc_services.UserLoginRequest{
+		Email:    loginRequest.Email,
+		Password: loginRequest.Password,
+	})
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	log.Printf("User %s logged in successfully", loginRequest.Email)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "Login successful"}`))
 }

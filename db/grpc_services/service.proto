@@ -7,6 +7,7 @@ option go_package = ".;grpc_services";
 
 service DataService {
   // User
+  rpc LoginUser (UserLoginRequest) returns (google.protobuf.Empty) {}
   rpc CreateUser (UserCreateUpdateRequest) returns (User) {}
   rpc GetUser (UserReadDeleteRequest) returns (User) {}
   rpc UpdateUser (UserCreateUpdateRequest) returns (User) {}
@@ -38,6 +39,11 @@ message UserCreateUpdateRequest {
 
 message UserReadDeleteRequest {
   string email = 1;
+}
+
+message UserLoginRequest {
+  string email = 1;
+  string password = 2;
 }
 
 
