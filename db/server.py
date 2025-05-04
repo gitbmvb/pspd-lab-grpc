@@ -25,9 +25,9 @@ class DataService(service_pb2_grpc.DataServiceServicer):
                 print(f"gRPC|db - Received CreateUser request - email: {request.email}, name: {request.name}")
 
                 cursor.execute(
-                    """INSERT INTO users (email, name, password)
+                    """INSERT INTO "USER" (email, "name", "password")
                     VALUES (%s, %s, %s)
-                    RETURNING email, name, password""",
+                    RETURNING email, "name", "password\"""",
                     (request.email, request.name, request.password)
                 )
                 result = cursor.fetchone()
@@ -48,11 +48,11 @@ class DataService(service_pb2_grpc.DataServiceServicer):
                 print(f"gRPC|db - Received UpdateUser request - email: {request.email}, name: {request.name}")
 
                 cursor.execute(
-                    """UPDATE users 
-                    SET name = COALESCE(%s, name), 
-                        password = COALESCE(%s, password)
+                    """UPDATE "USER" 
+                    SET "name" = COALESCE(%s, name), 
+                        "password" = COALESCE(%s, password)
                     WHERE email = %s
-                    RETURNING email, name, password""",
+                    RETURNING email, "name", \"password\"""",
                     (request.name, request.password, request.email)
                 )
                 result = cursor.fetchone()
@@ -70,7 +70,7 @@ class DataService(service_pb2_grpc.DataServiceServicer):
                 print(f"gRPC|db - Received DeleteUser request - email: {request.email}")
 
                 cursor.execute(
-                    "DELETE FROM users WHERE email = %s RETURNING email",
+                    "DELETE FROM \"USER\" WHERE email = %s RETURNING email",
                     (request.email,)
                 )
                 if not cursor.fetchone():
@@ -87,7 +87,7 @@ class DataService(service_pb2_grpc.DataServiceServicer):
                 print(f"gRPC|db - Received GetUser request - email: {request.email}")
 
                 cursor.execute(
-                    "SELECT name, email, password FROM users WHERE email = %s",
+                    "SELECT \"name\", email, \"password\" FROM \"USER\" WHERE email = %s",
                     (request.email,)
                 )
                 result = cursor.fetchone()
@@ -105,7 +105,7 @@ class DataService(service_pb2_grpc.DataServiceServicer):
             try:
                 print("gRPC|db - Received ListUsers request")
 
-                cursor.execute("SELECT name, email, password FROM users")
+                cursor.execute("SELECT \"name\", email, \"password\" FROM \"USER\"")
                 response = service_pb2.Users()
                 for row in cursor:
                     response.users.add(name=row[0], email=row[1], password=row[2])
@@ -118,18 +118,18 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def CreateChat(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received CreateChat request - topic: {request.topic}, email: {request.email}")
+                print(f"gRPC|db - Received CreateChat request - subject: {request.subject}, email: {request.email}")
 
                 cursor.execute(
-                    """INSERT INTO chats (topic, email)
+                    """INSERT INTO CHAT ("subject", email)
                     VALUES (%s, %s)
-                    RETURNING id, topic, created_at, email""",
-                    (request.topic, request.email)
+                    RETURNING idChat, "subject", startDate, email""",
+                    (request.subject, request.email)
                 )
                 result = cursor.fetchone()
                 self.conn.commit()
-                chat = service_pb2.Chat(id=result[0], topic=result[1], email=result[3])
-                chat.created_at.FromDatetime(result[2])
+                chat = service_pb2.Chat(idChat=result[0], subject=result[1], email=result[3])
+                chat.startDate.FromDatetime(result[2])
                 return chat
             except psycopg2.Error as e:
                 self.conn.rollback()
@@ -138,21 +138,21 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def UpdateChat(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received UpdateChat request - id: {request.id}, topic: {request.topic}, email: {request.email}")
+                print(f"gRPC|db - Received UpdateChat request - id: {request.idChat}, subject: {request.subject}, email: {request.email}")
 
                 cursor.execute(
-                    """UPDATE chats 
-                    SET topic = COALESCE(%s, topic)
-                    WHERE id = %s AND email = %s
-                    RETURNING id, topic, created_at, email""",
-                    (request.topic, request.id, request.email)
+                    """UPDATE CHAT 
+                    SET "subject" = COALESCE(%s, "subject")
+                    WHERE idChat = %s
+                    RETURNING idChat, "subject", startDate, email""",
+                    (request.subject, request.idChat)
                 )
                 result = cursor.fetchone()
                 self.conn.commit()
                 if not result:
                     context.abort(grpc.StatusCode.NOT_FOUND, "Chat not found or access denied")
-                chat = service_pb2.Chat(id=result[0], topic=result[1], email=result[3])
-                chat.created_at.FromDatetime(result[2])
+                chat = service_pb2.Chat(idChat=result[0], subject=result[1], email=result[3])
+                chat.startDate.FromDatetime(result[2])
                 return chat
             except psycopg2.Error as e:
                 self.conn.rollback()
@@ -164,8 +164,8 @@ class DataService(service_pb2_grpc.DataServiceServicer):
                 print(f"gRPC|db - Received DeleteChat request - id: {request.id}")
 
                 cursor.execute(
-                    "DELETE FROM chats WHERE id = %s RETURNING id",
-                    (request.id,)
+                    "DELETE FROM CHAT WHERE idChat = %s RETURNING idChat",
+                    (request.idChat,)
                 )
                 if not cursor.fetchone():
                     context.abort(grpc.StatusCode.NOT_FOUND, "Chat not found")
@@ -178,46 +178,46 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def GetChat(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received GetChat request - id: {request.id}, email: {request.email}")
+                print(f"gRPC|db - Received GetChat request - idChat: {request.idChat}, email: {request.email}")
 
-                if not request.id or not request.email:
+                if not request.idChat or not request.email:
                     context.abort(grpc.StatusCode.INVALID_ARGUMENT, "Both id and email must be provided")
 
                 cursor.execute(
-                    "SELECT id, topic, created_at, email FROM chats WHERE id = %s AND email = %s",
-                    (request.id, request.email)
+                    "SELECT idChat, \"subject\", startDate, email FROM CHAT WHERE idChat = %s AND email = %s",
+                    (request.idChat, request.email)
                 )
                 result = cursor.fetchone()
 
                 if not result:
                     context.abort(grpc.StatusCode.NOT_FOUND, "Chat not found or access denied")
 
-                chat = service_pb2.Chat(id=result[0], topic=result[1], email=result[3])
-                chat.created_at.FromDatetime(result[2])
+                chat = service_pb2.Chat(idChat=result[0], subject=result[1], email=result[3])
+                chat.startDate.FromDatetime(result[2])
                 return chat
             except psycopg2.Error as e:
                 context.abort(grpc.StatusCode.INTERNAL, f"Database error: {str(e)}")
 
 
-    def GetChats(self, request, context):
+    def ListChats(self, request, context):
         with self.conn.cursor() as cursor:
             try:
                 print(f"gRPC|db - Received GetChats request - email: {request.email}")
 
                 cursor.execute(
-                    "SELECT id, topic, created_at, email FROM chats WHERE email = %s ORDER BY created_at ASC",
+                    "SELECT idChat, \"subject\", startDate, email FROM CHAT WHERE email = %s ORDER BY startDate ASC",
                     (request.email,)
                 )
                 
                 response = service_pb2.Chats()
                 for row in cursor:
                     chat = response.chats.add(
-                        id=row[0],
-                        topic=row[1],
+                        idChat=row[0],
+                        subject=row[1],
                         email=row[3]
                     )
                     if row[2]:  # Handle timestamp conversion if not None
-                        chat.created_at.FromDatetime(row[2])
+                        chat.startDate.FromDatetime(row[2])
                 return response
                 
             except psycopg2.Error as e:
@@ -228,23 +228,22 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def CreateMessage(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received CreateMessage request - question: {request.question}, answer: {request.answer}, chat_id: {request.chat_id}")
+                print(f"gRPC|db - Received CreateMessage request - question: {request.question}, answer: {request.answer}, idChat: {request.idChat}")
 
                 cursor.execute(
-                    """INSERT INTO messages (question, answer, chat_id)
+                    """INSERT INTO MESSAGE (content, idChat)
                     VALUES (%s, %s, %s)
-                    RETURNING message_id, question, answer, timestamp, chat_id""",
-                    (request.question, request.answer, request.chat_id)
+                    RETURNING idMessage, content, "dateTime", idChat""",
+                    (request.content, request.idChat)
                 )
                 result = cursor.fetchone()
                 self.conn.commit()
                 message = service_pb2.Message(
-                    message_id=result[0],
-                    question=result[1],
-                    answer=result[2],
-                    chat_id=result[4]
+                    idMessage=result[0],
+                    content=result[1],
+                    idChat=result[3]
                 )
-                message.timestamp.FromDatetime(result[3])
+                message.dateTime.FromDatetime(result[2])
                 return message
             except psycopg2.Error as e:
                 self.conn.rollback()
@@ -253,27 +252,25 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def UpdateMessage(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received UpdateMessage request - message_id: {request.message_id}, question: {request.question}, answer: {request.answer}")
+                print(f"gRPC|db - Received UpdateMessage request - idMessage: {request.idMessage}, question: {request.question}, answer: {request.answer}")
 
                 cursor.execute(
-                    """UPDATE messages 
-                    SET question = COALESCE(%s, question),
-                        answer = COALESCE(%s, answer)
-                    WHERE message_id = %s
-                    RETURNING message_id, question, answer, timestamp, chat_id""",
-                    (request.question, request.answer, request.message_id)
+                    """UPDATE MESSAGE 
+                    SET content = COALESCE(%s, content)
+                    WHERE idMessage = %s
+                    RETURNING idMessage, content, "dateTime", idChat""",
+                    (request.content, request.idMessage)
                 )
                 result = cursor.fetchone()
                 self.conn.commit()
                 if not result:
                     context.abort(grpc.StatusCode.NOT_FOUND, "Message not found")
                 message = service_pb2.Message(
-                    message_id=result[0],
-                    question=result[1],
-                    answer=result[2],
-                    chat_id=result[4]
+                    idMessage=result[0],
+                    content=result[1],
+                    idChat=result[3]
                 )
-                message.timestamp.FromDatetime(result[3])
+                message.dateTime.FromDatetime(result[2])
                 return message
             except psycopg2.Error as e:
                 self.conn.rollback()
@@ -282,11 +279,11 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def DeleteMessage(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received DeleteMessage request - message_id: {request.message_id}")
+                print(f"gRPC|db - Received DeleteMessage request - idMessage: {request.idMessage}")
 
                 cursor.execute(
-                    "DELETE FROM messages WHERE message_id = %s RETURNING message_id",
-                    (request.message_id,)
+                    "DELETE FROM MESSAGE WHERE idMessage = %s RETURNING idMessage",
+                    (request.idMessage,)
                 )
                 if not cursor.fetchone():
                     context.abort(grpc.StatusCode.NOT_FOUND, "Message not found")
@@ -299,56 +296,54 @@ class DataService(service_pb2_grpc.DataServiceServicer):
     def GetMessage(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received GetMessage request - message_id: {request.message_id}, chat_id: {request.chat_id}")
+                print(f"gRPC|db - Received GetMessage request - idMessage: {request.idMessage}, idChat: {request.idChat}")
                 
                 cursor.execute(
-                    """SELECT m.message_id, m.question, m.answer, m.timestamp, m.chat_id 
-                    FROM messages m 
-                    WHERE m.message_id = %s AND m.chat_id = %s""",
-                    (request.message_id, request.chat_id)
+                    """SELECT m.idMessage, m.content, m."dateTime", m.idChat 
+                    FROM MESSAGE m 
+                    WHERE m.idMessage = %s AND m.idChat = %s""",
+                    (request.idMessage, request.idChat)
                 )
                 result = cursor.fetchone()
                 if not result:
                     context.abort(grpc.StatusCode.NOT_FOUND, 
-                                f"Message not found with message_id={request.message_id} in chat {request.chat_id}")
+                                f"Message not found with idMessage={request.idMessage} in chat {request.idChat}")
                 
                 message = service_pb2.Message(
-                    message_id=result[0],
-                    question=result[1],
-                    answer=result[2],
-                    chat_id=result[4]
+                    idMessage=result[0],
+                    content=result[1],
+                    idChat=result[3]
                 )
-                if result[3]:  # Handle timestamp conversion
-                    message.timestamp.FromDatetime(result[3])
+                if result[2]:  # Handle dateTime conversion
+                    message.dateTime.FromDatetime(result[2])
                 return message
                 
             except psycopg2.Error as e:
                 context.abort(grpc.StatusCode.INTERNAL, f"Database error: {str(e)}")
 
-    def GetMessages(self, request, context):
+    def ListMessages(self, request, context):
         with self.conn.cursor() as cursor:
             try:
-                print(f"gRPC|db - Received GetMessages request - chat_id: {request.chat_id}")
+                print(f"gRPC|db - Received GetMessages request - idChat: {request.idChat}")
                 
                 cursor.execute(
-                    """SELECT m.message_id, m.question, m.answer, m.timestamp, m.chat_id 
-                    FROM messages m 
-                    WHERE m.chat_id = %s 
-                    ORDER BY m.timestamp DESC""",
-                    (request.chat_id,)
+                    """SELECT m.idMessage, m.content, m."dateTime", m.idChat 
+                    FROM MESSAGE m 
+                    WHERE m.idChat = %s 
+                    ORDER BY m."dateTime" DESC""",
+                    (request.idChat,)
                 )
 
                 response = service_pb2.Messages()
                 
                 for row in cursor:
                     message = response.messages.add(
-                        message_id=row[0],
-                        question=row[1],
-                        answer=row[2],
-                        chat_id=row[4]
+                        idMessage=row[0],
+                        content=row[1],
+                        idChat=row[3]
                     )
-                    if row[3]:
-                        message.timestamp.FromDatetime(row[3])
+                    if row[2]:
+                        message.dateTime.FromDatetime(row[2])
                 
                 return response
                 

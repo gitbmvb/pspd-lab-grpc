@@ -4,7 +4,7 @@ import grpc
 import warnings
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-import service_pb2 as service__pb2
+from grpc_services import service_pb2 as grpc__services_dot_service__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -19,7 +19,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in service_pb2_grpc.py depends on'
+        + f' but the generated code in grpc_services/service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -37,78 +37,78 @@ class DataServiceStub(object):
         """
         self.CreateUser = channel.unary_unary(
                 '/DataService/CreateUser',
-                request_serializer=service__pb2.UserRequest.SerializeToString,
-                response_deserializer=service__pb2.User.FromString,
+                request_serializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
                 _registered_method=True)
         self.GetUser = channel.unary_unary(
                 '/DataService/GetUser',
-                request_serializer=service__pb2.Email.SerializeToString,
-                response_deserializer=service__pb2.User.FromString,
+                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
                 _registered_method=True)
         self.UpdateUser = channel.unary_unary(
                 '/DataService/UpdateUser',
-                request_serializer=service__pb2.UserRequest.SerializeToString,
-                response_deserializer=service__pb2.User.FromString,
+                request_serializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
                 _registered_method=True)
         self.DeleteUser = channel.unary_unary(
                 '/DataService/DeleteUser',
-                request_serializer=service__pb2.Email.SerializeToString,
+                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.GetUsers = channel.unary_unary(
-                '/DataService/GetUsers',
+        self.ListUsers = channel.unary_unary(
+                '/DataService/ListUsers',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=service__pb2.Users.FromString,
+                response_deserializer=grpc__services_dot_service__pb2.Users.FromString,
                 _registered_method=True)
         self.CreateChat = channel.unary_unary(
                 '/DataService/CreateChat',
-                request_serializer=service__pb2.ChatRequest.SerializeToString,
-                response_deserializer=service__pb2.Chat.FromString,
+                request_serializer=grpc__services_dot_service__pb2.ChatCreateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
                 _registered_method=True)
         self.GetChat = channel.unary_unary(
                 '/DataService/GetChat',
-                request_serializer=service__pb2.ChatData.SerializeToString,
-                response_deserializer=service__pb2.Chat.FromString,
+                request_serializer=grpc__services_dot_service__pb2.ChatReadRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
                 _registered_method=True)
         self.UpdateChat = channel.unary_unary(
                 '/DataService/UpdateChat',
-                request_serializer=service__pb2.ChatRequest.SerializeToString,
-                response_deserializer=service__pb2.Chat.FromString,
+                request_serializer=grpc__services_dot_service__pb2.ChatUpdateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
                 _registered_method=True)
         self.DeleteChat = channel.unary_unary(
                 '/DataService/DeleteChat',
-                request_serializer=service__pb2.ChatId.SerializeToString,
+                request_serializer=grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.GetChats = channel.unary_unary(
-                '/DataService/GetChats',
-                request_serializer=service__pb2.Email.SerializeToString,
-                response_deserializer=service__pb2.Chats.FromString,
+        self.ListChats = channel.unary_unary(
+                '/DataService/ListChats',
+                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Chats.FromString,
                 _registered_method=True)
         self.CreateMessage = channel.unary_unary(
                 '/DataService/CreateMessage',
-                request_serializer=service__pb2.MessageRequest.SerializeToString,
-                response_deserializer=service__pb2.Message.FromString,
+                request_serializer=grpc__services_dot_service__pb2.MessageCreateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
                 _registered_method=True)
         self.GetMessage = channel.unary_unary(
                 '/DataService/GetMessage',
-                request_serializer=service__pb2.MessageData.SerializeToString,
-                response_deserializer=service__pb2.Message.FromString,
+                request_serializer=grpc__services_dot_service__pb2.MessageReadRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
                 _registered_method=True)
         self.UpdateMessage = channel.unary_unary(
                 '/DataService/UpdateMessage',
-                request_serializer=service__pb2.MessageRequest.SerializeToString,
-                response_deserializer=service__pb2.Message.FromString,
+                request_serializer=grpc__services_dot_service__pb2.MessageUpdateRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
                 _registered_method=True)
         self.DeleteMessage = channel.unary_unary(
                 '/DataService/DeleteMessage',
-                request_serializer=service__pb2.MessageId.SerializeToString,
+                request_serializer=grpc__services_dot_service__pb2.MessageDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
-        self.GetMessages = channel.unary_unary(
-                '/DataService/GetMessages',
-                request_serializer=service__pb2.ChatId.SerializeToString,
-                response_deserializer=service__pb2.Messages.FromString,
+        self.ListMessages = channel.unary_unary(
+                '/DataService/ListMessages',
+                request_serializer=grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
+                response_deserializer=grpc__services_dot_service__pb2.Messages.FromString,
                 _registered_method=True)
 
 
@@ -140,7 +140,7 @@ class DataServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetUsers(self, request, context):
+    def ListUsers(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -171,7 +171,7 @@ class DataServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetChats(self, request, context):
+    def ListChats(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -202,7 +202,7 @@ class DataServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetMessages(self, request, context):
+    def ListMessages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -213,78 +213,78 @@ def add_DataServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
-                    request_deserializer=service__pb2.UserRequest.FromString,
-                    response_serializer=service__pb2.User.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
             ),
             'GetUser': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUser,
-                    request_deserializer=service__pb2.Email.FromString,
-                    response_serializer=service__pb2.User.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
             ),
             'UpdateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateUser,
-                    request_deserializer=service__pb2.UserRequest.FromString,
-                    response_serializer=service__pb2.User.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
             ),
             'DeleteUser': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteUser,
-                    request_deserializer=service__pb2.Email.FromString,
+                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'GetUsers': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetUsers,
+            'ListUsers': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListUsers,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=service__pb2.Users.SerializeToString,
+                    response_serializer=grpc__services_dot_service__pb2.Users.SerializeToString,
             ),
             'CreateChat': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateChat,
-                    request_deserializer=service__pb2.ChatRequest.FromString,
-                    response_serializer=service__pb2.Chat.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.ChatCreateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
             ),
             'GetChat': grpc.unary_unary_rpc_method_handler(
                     servicer.GetChat,
-                    request_deserializer=service__pb2.ChatData.FromString,
-                    response_serializer=service__pb2.Chat.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.ChatReadRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
             ),
             'UpdateChat': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateChat,
-                    request_deserializer=service__pb2.ChatRequest.FromString,
-                    response_serializer=service__pb2.Chat.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.ChatUpdateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
             ),
             'DeleteChat': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteChat,
-                    request_deserializer=service__pb2.ChatId.FromString,
+                    request_deserializer=grpc__services_dot_service__pb2.ChatDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'GetChats': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetChats,
-                    request_deserializer=service__pb2.Email.FromString,
-                    response_serializer=service__pb2.Chats.SerializeToString,
+            'ListChats': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListChats,
+                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Chats.SerializeToString,
             ),
             'CreateMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateMessage,
-                    request_deserializer=service__pb2.MessageRequest.FromString,
-                    response_serializer=service__pb2.Message.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.MessageCreateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
             ),
             'GetMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMessage,
-                    request_deserializer=service__pb2.MessageData.FromString,
-                    response_serializer=service__pb2.Message.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.MessageReadRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
             ),
             'UpdateMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateMessage,
-                    request_deserializer=service__pb2.MessageRequest.FromString,
-                    response_serializer=service__pb2.Message.SerializeToString,
+                    request_deserializer=grpc__services_dot_service__pb2.MessageUpdateRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
             ),
             'DeleteMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteMessage,
-                    request_deserializer=service__pb2.MessageId.FromString,
+                    request_deserializer=grpc__services_dot_service__pb2.MessageDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
-            'GetMessages': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetMessages,
-                    request_deserializer=service__pb2.ChatId.FromString,
-                    response_serializer=service__pb2.Messages.SerializeToString,
+            'ListMessages': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListMessages,
+                    request_deserializer=grpc__services_dot_service__pb2.ChatDeleteRequest.FromString,
+                    response_serializer=grpc__services_dot_service__pb2.Messages.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -312,8 +312,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateUser',
-            service__pb2.UserRequest.SerializeToString,
-            service__pb2.User.FromString,
+            grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -339,8 +339,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetUser',
-            service__pb2.Email.SerializeToString,
-            service__pb2.User.FromString,
+            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+            grpc__services_dot_service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -366,8 +366,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateUser',
-            service__pb2.UserRequest.SerializeToString,
-            service__pb2.User.FromString,
+            grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -393,7 +393,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteUser',
-            service__pb2.Email.SerializeToString,
+            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -406,7 +406,7 @@ class DataService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetUsers(request,
+    def ListUsers(request,
             target,
             options=(),
             channel_credentials=None,
@@ -419,9 +419,9 @@ class DataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/DataService/GetUsers',
+            '/DataService/ListUsers',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            service__pb2.Users.FromString,
+            grpc__services_dot_service__pb2.Users.FromString,
             options,
             channel_credentials,
             insecure,
@@ -447,8 +447,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateChat',
-            service__pb2.ChatRequest.SerializeToString,
-            service__pb2.Chat.FromString,
+            grpc__services_dot_service__pb2.ChatCreateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -474,8 +474,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetChat',
-            service__pb2.ChatData.SerializeToString,
-            service__pb2.Chat.FromString,
+            grpc__services_dot_service__pb2.ChatReadRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -501,8 +501,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateChat',
-            service__pb2.ChatRequest.SerializeToString,
-            service__pb2.Chat.FromString,
+            grpc__services_dot_service__pb2.ChatUpdateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -528,7 +528,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteChat',
-            service__pb2.ChatId.SerializeToString,
+            grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -541,7 +541,7 @@ class DataService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetChats(request,
+    def ListChats(request,
             target,
             options=(),
             channel_credentials=None,
@@ -554,9 +554,9 @@ class DataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/DataService/GetChats',
-            service__pb2.Email.SerializeToString,
-            service__pb2.Chats.FromString,
+            '/DataService/ListChats',
+            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Chats.FromString,
             options,
             channel_credentials,
             insecure,
@@ -582,8 +582,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateMessage',
-            service__pb2.MessageRequest.SerializeToString,
-            service__pb2.Message.FromString,
+            grpc__services_dot_service__pb2.MessageCreateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -609,8 +609,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetMessage',
-            service__pb2.MessageData.SerializeToString,
-            service__pb2.Message.FromString,
+            grpc__services_dot_service__pb2.MessageReadRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -636,8 +636,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateMessage',
-            service__pb2.MessageRequest.SerializeToString,
-            service__pb2.Message.FromString,
+            grpc__services_dot_service__pb2.MessageUpdateRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -663,7 +663,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteMessage',
-            service__pb2.MessageId.SerializeToString,
+            grpc__services_dot_service__pb2.MessageDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -676,7 +676,7 @@ class DataService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetMessages(request,
+    def ListMessages(request,
             target,
             options=(),
             channel_credentials=None,
@@ -689,9 +689,9 @@ class DataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/DataService/GetMessages',
-            service__pb2.ChatId.SerializeToString,
-            service__pb2.Messages.FromString,
+            '/DataService/ListMessages',
+            grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
+            grpc__services_dot_service__pb2.Messages.FromString,
             options,
             channel_credentials,
             insecure,
