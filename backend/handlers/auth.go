@@ -23,7 +23,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err := grpc_services.Client.LoginUser(ctx, &grpc_services.UserLoginRequest{
+	_, err := grpc_services.ClientDB.LoginUser(ctx, &grpc_services.UserLoginRequest{
 		Email:    loginRequest.Email,
 		Password: loginRequest.Password,
 	})

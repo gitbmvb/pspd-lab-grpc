@@ -1,11 +1,15 @@
 from concurrent import futures
 import json
 import requests
+from functools import lru_cache
 
 import grpc
 
 from grpc_services import service_pb2
 from grpc_services import service_pb2_grpc
+
+TIMEOUT = 10
+MODEL_NAME = "llama3.2:latest"
 
 class LLMServiceServicer(service_pb2_grpc.LLMServiceServicer):
     def __init__(self):
@@ -37,15 +41,42 @@ class LLMServiceServicer(service_pb2_grpc.LLMServiceServicer):
             context.set_details(f"Ollama error: {str(e)}")
             raise
 
-    def HealthCheck(self, request, context):
+    @lru_cache(maxsize=1)
+    def _check_model_availability(self, model: str) -> bool:
+        """Verifica com cache de 30 segundos se o modelo está disponível"""
         try:
-            resp = requests.get("http://localhost:11434")
-            return service_pb2.HealthResponse(
-                ready=resp.ok,
-                model="llama3.2"
+            # Verifica primeiro se o serviço está respondendo
+            health_resp = requests.get("http://localhost:11434", timeout=TIMEOUT)
+            if not health_resp.ok:
+                print("Ollama service is not responding.")
+                return False
+                
+            # Verifica se o modelo está na lista de modelos disponíveis
+            models_resp = requests.get("http://localhost:11434/api/tags", timeout=TIMEOUT)
+            models_resp.raise_for_status()
+            
+            models_data = models_resp.json()
+            if not any(m['name'] == model for m in models_data.get('models', [])):
+                return False
+                
+            # Teste prático com um prompt pequeno
+            test_resp = requests.post(
+                "http://localhost:11434/api/generate",
+                json={"model": model, "prompt": "Oi", "stream": False},
+                timeout=TIMEOUT
             )
-        except Exception:
-            return service_pb2.HealthResponse(ready=False)
+            return test_resp.ok
+            
+        except Exception as e:
+            print(f"Model check failed for {model}: {str(e)}")
+            return False
+
+    def HealthCheck(self, request, context):
+        is_ready = self._check_model_availability(MODEL_NAME)
+        return service_pb2.HealthResponse(
+            ready=is_ready,
+            model=MODEL_NAME
+        )
 
     def LoadModel(self, request, context):
         try:

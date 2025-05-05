@@ -18,7 +18,7 @@ func ListChats(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.ListChats(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
+	resp, err := grpc_services.ClientDB.ListChats(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
@@ -49,7 +49,7 @@ func GetChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetChat(ctx, &grpc_services.ChatReadRequest{IdChat: idChatInt})
+	resp, err := grpc_services.ClientDB.GetChat(ctx, &grpc_services.ChatReadRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusNotFound, grpc_services.Response{
 			Status:  "error",
@@ -77,7 +77,7 @@ func CreateChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.CreateChat(ctx, &grpc_services.ChatCreateRequest{
+	resp, err := grpc_services.ClientDB.CreateChat(ctx, &grpc_services.ChatCreateRequest{
 		IdChat:   chatReq.ChatID,
 		Subject:  chatReq.Subject,
 		Email:    chatReq.Email,
@@ -121,7 +121,7 @@ func UpdateChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.UpdateChat(ctx, &grpc_services.ChatUpdateRequest{
+	resp, err := grpc_services.ClientDB.UpdateChat(ctx, &grpc_services.ChatUpdateRequest{
 		IdChat:   idChatInt,
 		Subject:  chatReq.Subject,
 	})
@@ -155,7 +155,7 @@ func DeleteChat(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err = grpc_services.Client.DeleteChat(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
+	_, err = grpc_services.ClientDB.DeleteChat(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",

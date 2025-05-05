@@ -17,3 +17,10 @@ type Message struct {
 	Content    string `json:"content"`
 	ChatID    int64  `json:"idChat"`
 }
+
+// type Prompt struct {
+// 	PromptText string  `json:"promptText"`
+// 	MaxTokens    int32 `json:"maxTokens"`
+// 	Temperature  float32 `json:"temperature"`
+// 	Model    string  `json:"model"`
+// }

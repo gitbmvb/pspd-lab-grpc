@@ -4,7 +4,7 @@ import grpc
 import warnings
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from grpc_services import service_pb2 as grpc__services_dot_service__pb2
+from grpc_services import db_service_pb2 as protos_dot_db__service__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -19,7 +19,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in grpc_services/service_pb2_grpc.py depends on'
+        + f' but the generated code in protos/db_service_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -37,83 +37,83 @@ class DataServiceStub(object):
         """
         self.LoginUser = channel.unary_unary(
                 '/DataService/LoginUser',
-                request_serializer=grpc__services_dot_service__pb2.UserLoginRequest.SerializeToString,
+                request_serializer=protos_dot_db__service__pb2.UserLoginRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.CreateUser = channel.unary_unary(
                 '/DataService/CreateUser',
-                request_serializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
+                request_serializer=protos_dot_db__service__pb2.UserCreateUpdateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.User.FromString,
                 _registered_method=True)
         self.GetUser = channel.unary_unary(
                 '/DataService/GetUser',
-                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
+                request_serializer=protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.User.FromString,
                 _registered_method=True)
         self.UpdateUser = channel.unary_unary(
                 '/DataService/UpdateUser',
-                request_serializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.User.FromString,
+                request_serializer=protos_dot_db__service__pb2.UserCreateUpdateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.User.FromString,
                 _registered_method=True)
         self.DeleteUser = channel.unary_unary(
                 '/DataService/DeleteUser',
-                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+                request_serializer=protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.ListUsers = channel.unary_unary(
                 '/DataService/ListUsers',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Users.FromString,
+                response_deserializer=protos_dot_db__service__pb2.Users.FromString,
                 _registered_method=True)
         self.CreateChat = channel.unary_unary(
                 '/DataService/CreateChat',
-                request_serializer=grpc__services_dot_service__pb2.ChatCreateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
+                request_serializer=protos_dot_db__service__pb2.ChatCreateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Chat.FromString,
                 _registered_method=True)
         self.GetChat = channel.unary_unary(
                 '/DataService/GetChat',
-                request_serializer=grpc__services_dot_service__pb2.ChatReadRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
+                request_serializer=protos_dot_db__service__pb2.ChatReadRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Chat.FromString,
                 _registered_method=True)
         self.UpdateChat = channel.unary_unary(
                 '/DataService/UpdateChat',
-                request_serializer=grpc__services_dot_service__pb2.ChatUpdateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Chat.FromString,
+                request_serializer=protos_dot_db__service__pb2.ChatUpdateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Chat.FromString,
                 _registered_method=True)
         self.DeleteChat = channel.unary_unary(
                 '/DataService/DeleteChat',
-                request_serializer=grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
+                request_serializer=protos_dot_db__service__pb2.ChatDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.ListChats = channel.unary_unary(
                 '/DataService/ListChats',
-                request_serializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Chats.FromString,
+                request_serializer=protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Chats.FromString,
                 _registered_method=True)
         self.CreateMessage = channel.unary_unary(
                 '/DataService/CreateMessage',
-                request_serializer=grpc__services_dot_service__pb2.MessageCreateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
+                request_serializer=protos_dot_db__service__pb2.MessageCreateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Message.FromString,
                 _registered_method=True)
         self.GetMessage = channel.unary_unary(
                 '/DataService/GetMessage',
-                request_serializer=grpc__services_dot_service__pb2.MessageReadRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
+                request_serializer=protos_dot_db__service__pb2.MessageReadRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Message.FromString,
                 _registered_method=True)
         self.UpdateMessage = channel.unary_unary(
                 '/DataService/UpdateMessage',
-                request_serializer=grpc__services_dot_service__pb2.MessageUpdateRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Message.FromString,
+                request_serializer=protos_dot_db__service__pb2.MessageUpdateRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Message.FromString,
                 _registered_method=True)
         self.DeleteMessage = channel.unary_unary(
                 '/DataService/DeleteMessage',
-                request_serializer=grpc__services_dot_service__pb2.MessageDeleteRequest.SerializeToString,
+                request_serializer=protos_dot_db__service__pb2.MessageDeleteRequest.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.ListMessages = channel.unary_unary(
                 '/DataService/ListMessages',
-                request_serializer=grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
-                response_deserializer=grpc__services_dot_service__pb2.Messages.FromString,
+                request_serializer=protos_dot_db__service__pb2.ChatDeleteRequest.SerializeToString,
+                response_deserializer=protos_dot_db__service__pb2.Messages.FromString,
                 _registered_method=True)
 
 
@@ -224,83 +224,83 @@ def add_DataServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'LoginUser': grpc.unary_unary_rpc_method_handler(
                     servicer.LoginUser,
-                    request_deserializer=grpc__services_dot_service__pb2.UserLoginRequest.FromString,
+                    request_deserializer=protos_dot_db__service__pb2.UserLoginRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
-                    request_deserializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.UserCreateUpdateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.User.SerializeToString,
             ),
             'GetUser': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUser,
-                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.UserReadDeleteRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.User.SerializeToString,
             ),
             'UpdateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateUser,
-                    request_deserializer=grpc__services_dot_service__pb2.UserCreateUpdateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.User.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.UserCreateUpdateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.User.SerializeToString,
             ),
             'DeleteUser': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteUser,
-                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
+                    request_deserializer=protos_dot_db__service__pb2.UserReadDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'ListUsers': grpc.unary_unary_rpc_method_handler(
                     servicer.ListUsers,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Users.SerializeToString,
+                    response_serializer=protos_dot_db__service__pb2.Users.SerializeToString,
             ),
             'CreateChat': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateChat,
-                    request_deserializer=grpc__services_dot_service__pb2.ChatCreateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.ChatCreateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Chat.SerializeToString,
             ),
             'GetChat': grpc.unary_unary_rpc_method_handler(
                     servicer.GetChat,
-                    request_deserializer=grpc__services_dot_service__pb2.ChatReadRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.ChatReadRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Chat.SerializeToString,
             ),
             'UpdateChat': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateChat,
-                    request_deserializer=grpc__services_dot_service__pb2.ChatUpdateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Chat.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.ChatUpdateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Chat.SerializeToString,
             ),
             'DeleteChat': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteChat,
-                    request_deserializer=grpc__services_dot_service__pb2.ChatDeleteRequest.FromString,
+                    request_deserializer=protos_dot_db__service__pb2.ChatDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'ListChats': grpc.unary_unary_rpc_method_handler(
                     servicer.ListChats,
-                    request_deserializer=grpc__services_dot_service__pb2.UserReadDeleteRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Chats.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.UserReadDeleteRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Chats.SerializeToString,
             ),
             'CreateMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateMessage,
-                    request_deserializer=grpc__services_dot_service__pb2.MessageCreateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.MessageCreateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Message.SerializeToString,
             ),
             'GetMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMessage,
-                    request_deserializer=grpc__services_dot_service__pb2.MessageReadRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.MessageReadRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Message.SerializeToString,
             ),
             'UpdateMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateMessage,
-                    request_deserializer=grpc__services_dot_service__pb2.MessageUpdateRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Message.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.MessageUpdateRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Message.SerializeToString,
             ),
             'DeleteMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteMessage,
-                    request_deserializer=grpc__services_dot_service__pb2.MessageDeleteRequest.FromString,
+                    request_deserializer=protos_dot_db__service__pb2.MessageDeleteRequest.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'ListMessages': grpc.unary_unary_rpc_method_handler(
                     servicer.ListMessages,
-                    request_deserializer=grpc__services_dot_service__pb2.ChatDeleteRequest.FromString,
-                    response_serializer=grpc__services_dot_service__pb2.Messages.SerializeToString,
+                    request_deserializer=protos_dot_db__service__pb2.ChatDeleteRequest.FromString,
+                    response_serializer=protos_dot_db__service__pb2.Messages.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -328,7 +328,7 @@ class DataService(object):
             request,
             target,
             '/DataService/LoginUser',
-            grpc__services_dot_service__pb2.UserLoginRequest.SerializeToString,
+            protos_dot_db__service__pb2.UserLoginRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -355,8 +355,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateUser',
-            grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.User.FromString,
+            protos_dot_db__service__pb2.UserCreateUpdateRequest.SerializeToString,
+            protos_dot_db__service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -382,8 +382,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetUser',
-            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
-            grpc__services_dot_service__pb2.User.FromString,
+            protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -409,8 +409,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateUser',
-            grpc__services_dot_service__pb2.UserCreateUpdateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.User.FromString,
+            protos_dot_db__service__pb2.UserCreateUpdateRequest.SerializeToString,
+            protos_dot_db__service__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,
@@ -436,7 +436,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteUser',
-            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -464,7 +464,7 @@ class DataService(object):
             target,
             '/DataService/ListUsers',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            grpc__services_dot_service__pb2.Users.FromString,
+            protos_dot_db__service__pb2.Users.FromString,
             options,
             channel_credentials,
             insecure,
@@ -490,8 +490,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateChat',
-            grpc__services_dot_service__pb2.ChatCreateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Chat.FromString,
+            protos_dot_db__service__pb2.ChatCreateRequest.SerializeToString,
+            protos_dot_db__service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -517,8 +517,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetChat',
-            grpc__services_dot_service__pb2.ChatReadRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Chat.FromString,
+            protos_dot_db__service__pb2.ChatReadRequest.SerializeToString,
+            protos_dot_db__service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -544,8 +544,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateChat',
-            grpc__services_dot_service__pb2.ChatUpdateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Chat.FromString,
+            protos_dot_db__service__pb2.ChatUpdateRequest.SerializeToString,
+            protos_dot_db__service__pb2.Chat.FromString,
             options,
             channel_credentials,
             insecure,
@@ -571,7 +571,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteChat',
-            grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.ChatDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -598,8 +598,8 @@ class DataService(object):
             request,
             target,
             '/DataService/ListChats',
-            grpc__services_dot_service__pb2.UserReadDeleteRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Chats.FromString,
+            protos_dot_db__service__pb2.UserReadDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.Chats.FromString,
             options,
             channel_credentials,
             insecure,
@@ -625,8 +625,8 @@ class DataService(object):
             request,
             target,
             '/DataService/CreateMessage',
-            grpc__services_dot_service__pb2.MessageCreateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Message.FromString,
+            protos_dot_db__service__pb2.MessageCreateRequest.SerializeToString,
+            protos_dot_db__service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -652,8 +652,8 @@ class DataService(object):
             request,
             target,
             '/DataService/GetMessage',
-            grpc__services_dot_service__pb2.MessageReadRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Message.FromString,
+            protos_dot_db__service__pb2.MessageReadRequest.SerializeToString,
+            protos_dot_db__service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -679,8 +679,8 @@ class DataService(object):
             request,
             target,
             '/DataService/UpdateMessage',
-            grpc__services_dot_service__pb2.MessageUpdateRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Message.FromString,
+            protos_dot_db__service__pb2.MessageUpdateRequest.SerializeToString,
+            protos_dot_db__service__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,
@@ -706,7 +706,7 @@ class DataService(object):
             request,
             target,
             '/DataService/DeleteMessage',
-            grpc__services_dot_service__pb2.MessageDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.MessageDeleteRequest.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
@@ -733,8 +733,8 @@ class DataService(object):
             request,
             target,
             '/DataService/ListMessages',
-            grpc__services_dot_service__pb2.ChatDeleteRequest.SerializeToString,
-            grpc__services_dot_service__pb2.Messages.FromString,
+            protos_dot_db__service__pb2.ChatDeleteRequest.SerializeToString,
+            protos_dot_db__service__pb2.Messages.FromString,
             options,
             channel_credentials,
             insecure,

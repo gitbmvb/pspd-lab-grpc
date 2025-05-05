@@ -15,11 +15,11 @@ func ListUsers(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.ListUsers(ctx, &emptypb.Empty{})
+	resp, err := grpc_services.ClientDB.ListUsers(ctx, &emptypb.Empty{})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
-			Message: "Failed to fetch users",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -37,7 +37,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetUser(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
+	resp, err := grpc_services.ClientDB.GetUser(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusNotFound, grpc_services.Response{
 			Status:  "error",
@@ -65,7 +65,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.CreateUser(ctx, &grpc_services.UserCreateUpdateRequest{
+	resp, err := grpc_services.ClientDB.CreateUser(ctx, &grpc_services.UserCreateUpdateRequest{
 		Email:    userReq.Email,
 		Name:     userReq.Name,
 		Password: userReq.Password,
@@ -100,7 +100,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.UpdateUser(ctx, &grpc_services.UserCreateUpdateRequest{
+	resp, err := grpc_services.ClientDB.UpdateUser(ctx, &grpc_services.UserCreateUpdateRequest{
 		Email:    email,
 		Name:     userReq.Name,
 		Password: userReq.Password,
@@ -126,7 +126,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err := grpc_services.Client.DeleteUser(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
+	_, err := grpc_services.ClientDB.DeleteUser(ctx, &grpc_services.UserReadDeleteRequest{Email: email})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",

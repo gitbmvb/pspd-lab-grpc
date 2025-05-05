@@ -3,8 +3,8 @@ from concurrent import futures
 import psycopg2
 from google.protobuf import empty_pb2
 from google.protobuf.timestamp_pb2 import Timestamp
-import grpc_services.service_pb2 as service_pb2
-import grpc_services.service_pb2_grpc as service_pb2_grpc
+import grpc_services.db_service_pb2 as service_pb2
+import grpc_services.db_service_pb2_grpc as service_pb2_grpc
 from datetime import datetime
 
 class DataService(service_pb2_grpc.DataServiceServicer):

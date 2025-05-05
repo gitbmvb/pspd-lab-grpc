@@ -1,6 +1,8 @@
 package grpc_services
 
 import (
+	"context"
+    "time"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -14,11 +16,24 @@ type Response struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
-var Client DataServiceClient
+var ClientDB DataServiceClient
+var ClientLLM LLMServiceClient
 
 func Init() {
-	conn, err := grpc.Dial(
-		"localhost:50051",
+	log.Println("Initializing gRPC clients...")
+	InitDBClient()
+	log.Println("gRPC client for DB initialized")
+	InitLLMClient()
+	log.Println("gRPC client for LLM initialized")
+}
+
+func InitDBClient() {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	
+	conn, err := grpc.DialContext(
+		ctx,
+		"127.0.0.1:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
 	)
@@ -28,11 +43,39 @@ func Init() {
 
 	if conn.GetState().String() != "READY" {
 		log.Fatalf("gRPC connection is not ready, current state: %v", conn.GetState())
+	} else {
+		log.Printf("gRPC connection is ready, current state: %v", conn.GetState())
 	}
 
-	Client = NewDataServiceClient(conn)
+	ClientDB = NewDataServiceClient(conn)
+	
 	log.Println("Successfully connected to gRPC server")
 }
+
+func InitLLMClient() {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	
+	conn, err := grpc.DialContext(
+		ctx,
+		"127.0.0.1:50052",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock(),
+	)
+	if err != nil {
+		log.Fatalf("Failed to connect to gRPC server: %v", err)
+	}
+
+	if conn.GetState().String() != "READY" {
+		log.Fatalf("gRPC connection is not ready, current state: %v", conn.GetState())
+	} else {
+		log.Printf("gRPC connection is ready, current state: %v", conn.GetState())
+	}
+
+	ClientLLM = NewLLMServiceClient(conn)
+	log.Println("Successfully connected to gRPC server")
+}
+
 
 func SendJSONResponse(w http.ResponseWriter, statusCode int, resp Response) {
 	w.Header().Set("Content-Type", "application/json")

@@ -27,7 +27,7 @@ func ListMessages(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.ListMessages(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
+	resp, err := grpc_services.ClientDB.ListMessages(ctx, &grpc_services.ChatDeleteRequest{IdChat: idChatInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",
@@ -58,7 +58,7 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.GetMessage(ctx, &grpc_services.MessageReadRequest{IdMessage: idMessageInt})
+	resp, err := grpc_services.ClientDB.GetMessage(ctx, &grpc_services.MessageReadRequest{IdMessage: idMessageInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusNotFound, grpc_services.Response{
 			Status:  "error",
@@ -86,7 +86,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.CreateMessage(ctx, &grpc_services.MessageCreateRequest{
+	resp, err := grpc_services.ClientDB.CreateMessage(ctx, &grpc_services.MessageCreateRequest{
 		Content:   msgReq.Content,
 		IdChat:    msgReq.ChatID,
 	})
@@ -129,7 +129,7 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	resp, err := grpc_services.Client.UpdateMessage(ctx, &grpc_services.MessageUpdateRequest{
+	resp, err := grpc_services.ClientDB.UpdateMessage(ctx, &grpc_services.MessageUpdateRequest{
 		IdMessage: idMessageInt,
 		Content:   msgReq.Content,
 	})
@@ -163,7 +163,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	_, err = grpc_services.Client.DeleteMessage(ctx, &grpc_services.MessageDeleteRequest{IdMessage: idMessageInt})
+	_, err = grpc_services.ClientDB.DeleteMessage(ctx, &grpc_services.MessageDeleteRequest{IdMessage: idMessageInt})
 	if err != nil {
 		grpc_services.SendJSONResponse(w, http.StatusInternalServerError, grpc_services.Response{
 			Status:  "error",

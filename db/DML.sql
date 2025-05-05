@@ -1,3 +1,5 @@
+-- SQLBook: Code
+
 CREATE TABLE "USER" (
     "name" VARCHAR(50) NOT NULL,
     email VARCHAR(30) NOT NULL PRIMARY KEY,

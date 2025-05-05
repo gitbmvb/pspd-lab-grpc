@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+option go_package = ".;grpc_services";
 
 service LLMService {
   // Chamada unária para health check
@@ -12,7 +13,6 @@ service LLMService {
   rpc LoadModel (ModelRequest) returns (ModelResponse) {}
 }
 
-// Mensagens
 message HealthRequest {}
 
 message HealthResponse {

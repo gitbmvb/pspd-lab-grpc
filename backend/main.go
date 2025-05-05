@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend/db"
 	"backend/grpc_services"
 	"backend/handlers"
 	"github.com/rs/cors"
@@ -10,7 +9,6 @@ import (
 )
 
 func main() {
-	db.Init()
 	grpc_services.Init()
 	mux := http.NewServeMux()
 
