@@ -3,6 +3,7 @@ package main
 import (
 	"backend/grpc_services"
 	"backend/handlers"
+	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
@@ -10,30 +11,41 @@ import (
 
 func main() {
 	grpc_services.Init()
-	mux := http.NewServeMux()
+	
+	// Use gorilla/mux instead of http.ServeMux
+	router := mux.NewRouter().StrictSlash(true) // StrictSlash handles trailing slashes
 
-	mux.HandleFunc("/api/users", handlers.ListUsers)
-	mux.HandleFunc("/api/users/", handlers.GetUser)
-	mux.HandleFunc("/api/users/create", handlers.CreateUser)
-	mux.HandleFunc("/api/users/update/", handlers.UpdateUser)
-	mux.HandleFunc("/api/users/delete/", handlers.DeleteUser)
+	// User routes
+	userRouter := router.PathPrefix("/api/users").Subrouter()
+	userRouter.HandleFunc("", handlers.ListUsers).Methods("GET")
+	userRouter.HandleFunc("/{email}", handlers.GetUser).Methods("GET")
+	userRouter.HandleFunc("/create", handlers.CreateUser).Methods("POST")
+	userRouter.HandleFunc("/update/{email}", handlers.UpdateUser).Methods("PUT")
+	userRouter.HandleFunc("/delete/{email}", handlers.DeleteUser).Methods("DELETE")
 
-	mux.HandleFunc("/api/chats", handlers.ListChats)
-	mux.HandleFunc("/api/chats/", handlers.GetChat)
-	mux.HandleFunc("/api/chats/create", handlers.CreateChat)
-	mux.HandleFunc("/api/chats/update/", handlers.UpdateChat)
-	mux.HandleFunc("/api/chats/delete/", handlers.DeleteChat)
+	// Chat routes
+	chatRouter := router.PathPrefix("/api/chats").Subrouter()
+	chatRouter.HandleFunc("/{email}", handlers.ListChats).Methods("GET")
+	chatRouter.HandleFunc("/{id}", handlers.GetChat).Methods("GET")
+	chatRouter.HandleFunc("/create", handlers.CreateChat).Methods("POST")
+	chatRouter.HandleFunc("/update/{id}", handlers.UpdateChat).Methods("PUT")
+	chatRouter.HandleFunc("/delete/{id}", handlers.DeleteChat).Methods("DELETE")
 
-	mux.HandleFunc("/api/messages", handlers.ListMessages)
-	mux.HandleFunc("/api/messages/", handlers.GetMessage)
-	mux.HandleFunc("/api/messages/create", handlers.CreateMessage)
-	mux.HandleFunc("/api/messages/update/", handlers.UpdateMessage)
-	mux.HandleFunc("/api/messages/delete/", handlers.DeleteMessage)
+	// Message routes
+	messageRouter := router.PathPrefix("/api/messages").Subrouter()
+	messageRouter.HandleFunc("", handlers.ListMessages).Methods("GET")
+	messageRouter.HandleFunc("/{idMessage}", handlers.GetMessage).Methods("GET")
+	messageRouter.HandleFunc("/create", handlers.CreateMessage).Methods("POST")
+	messageRouter.HandleFunc("/update/{id}", handlers.UpdateMessage).Methods("PUT")
+	messageRouter.HandleFunc("/delete/{id}", handlers.DeleteMessage).Methods("DELETE")
 
-	mux.HandleFunc("/api/login", handlers.Login)
-	mux.HandleFunc("/api/ask", handlers.AskHandler)
+	// Auth & Misc routes
+	router.HandleFunc("/api/login", handlers.LoginUser).Methods("POST")
+	router.HandleFunc("/api/ask", handlers.AskHandler).Methods("POST")
 
-	handler := cors.Default().Handler(mux)
+	// CORS middleware
+	handler := cors.Default().Handler(router)
+	
 	log.Println("Starting server on :8080")
-	http.ListenAndServe(":8080", handler)
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }

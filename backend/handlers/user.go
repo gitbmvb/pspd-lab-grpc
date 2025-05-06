@@ -6,6 +6,8 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 	"time"
@@ -137,5 +139,70 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	grpc_services.SendJSONResponse(w, http.StatusNoContent, grpc_services.Response{
 		Status: "ok",
+	})
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	// 1. Parse request body
+	var loginReq struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&loginReq); err != nil {
+		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
+			Status:  "error",
+			Message: "Invalid request format",
+		})
+		return
+	}
+
+	// 2. Validate required fields
+	if loginReq.Email == "" || loginReq.Password == "" {
+		grpc_services.SendJSONResponse(w, http.StatusBadRequest, grpc_services.Response{
+			Status:  "error",
+			Message: "Email and password are required",
+		})
+		return
+	}
+
+	// 3. Create context with timeout
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+
+	// 4. Call gRPC service
+	_, err := grpc_services.ClientDB.LoginUser(ctx, &grpc_services.UserLoginRequest{
+		Email:    loginReq.Email,
+		Password: loginReq.Password,
+	})
+
+	// 5. Handle response
+	if err != nil {
+		statusCode := http.StatusInternalServerError
+		errorMsg := "Login failed"
+
+		// Convert gRPC error to status
+		st, _ := status.FromError(err)
+		switch st.Code() {
+		case codes.NotFound:
+			statusCode = http.StatusUnauthorized
+			errorMsg = "Invalid email or password" // Generic message for security
+		case codes.Internal:
+			errorMsg = "Internal server error"
+		}
+
+		grpc_services.SendJSONResponse(w, statusCode, grpc_services.Response{
+			Status:  "error",
+			Message: errorMsg,
+		})
+		return
+	}
+
+	// 6. Successful login response
+	grpc_services.SendJSONResponse(w, http.StatusOK, grpc_services.Response{
+		Status: "ok",
+		Data: map[string]string{
+			"email": loginReq.Email,
+		},
 	})
 }
