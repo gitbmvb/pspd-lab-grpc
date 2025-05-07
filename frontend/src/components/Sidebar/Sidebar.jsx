@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
 
 const Sidebar = () => {
+    const [extended, setExtended] = useState(true)
+    const navigate = useNavigate()
 
-    const [extended, setExtended] = useState(false)
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('userEmail')
+        navigate('/login')
+    }
 
     return (
         <div className='sidebar'>
@@ -26,17 +33,9 @@ const Sidebar = () => {
                 }
             </div>
             <div className="bottom">
-                <div className="bottom-item recent-entry">
-                    <img src={assets.question_icon} alt="" />
-                    {extended?<p>Ajuda</p>:null}
-                </div>
-                <div className="bottom-item recent-entry">
-                    <img src={assets.history_icon} alt="" />
-                    {extended?<p>Histórico</p>:null}
-                </div>
-                <div className="bottom-item recent-entry">
-                    <img src={assets.setting_icon} alt="" />
-                    {extended?<p>Configurações</p>:null}
+                <div className="bottom-item recent-entry" onClick={handleLogout}>
+                    <img src={assets.logout_icon} alt="" />
+                    {extended ? <p>Sair</p> : null}
                 </div>
             </div>
         </div>

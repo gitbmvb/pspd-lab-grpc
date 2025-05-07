@@ -13,7 +13,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setErrorMessage('') // limpa mensagens anteriores
+    setErrorMessage('')
 
     if (password !== confirmPassword) {
       setErrorMessage('As senhas não coincidem.')
@@ -22,7 +22,7 @@ const Register = () => {
 
     try {
       await registerUser(name, email, password)
-      navigate('/login')
+      navigate('/login', { state: { success: 'Cadastro realizado com sucesso!' } })
     } catch (err) {
       setErrorMessage('Erro ao criar conta. Verifique os dados e tente novamente.')
     }

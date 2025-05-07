@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { loginUser } from '../api'
 import './Login.css';
 
@@ -7,12 +7,13 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const location = useLocation()
     const navigate = useNavigate()
+    const successMessage = location.state?.success || ''
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setErrorMessage('')
-
         try {
             const data = await loginUser(email, password)
             localStorage.setItem('token', data.token || 'sample')
@@ -37,6 +38,15 @@ const Login = () => {
                     <p><span>Bem-vindo!</span></p>
                     <p>Faça login para continuar</p>
                 </div>
+
+                {successMessage && (
+                    <p className="success-message">{successMessage}</p>
+                )}
+
+                {errorMessage && (
+                    <p className="error-message">{errorMessage}</p>
+                )}
+
                 <form className="login-form" onSubmit={handleSubmit}>
                     <input
                         type="email"
@@ -47,18 +57,13 @@ const Login = () => {
                     />
                     <input
                         type="password"
-                        placeholder="Senha"
+                        placeholder="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         required
                     />
                     <button type="submit">Entrar</button>
                 </form>
-
-                {errorMessage && (
-                    <p className="error-message">{errorMessage}</p>
-                )}
-
                 <p className="create-account-link">
                     Ainda não possui uma conta? <a href="/register">Crie agora</a>.
                 </p>
