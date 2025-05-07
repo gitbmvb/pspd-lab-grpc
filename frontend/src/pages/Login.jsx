@@ -6,19 +6,20 @@ import './Login.css';
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setErrorMessage('')
+
         try {
             const data = await loginUser(email, password)
             localStorage.setItem('token', data.token || 'sample')
-            await loginUser(email, password)
             sessionStorage.setItem('userEmail', email)
-            alert('Login successful')
             navigate('/dashboard')
         } catch (err) {
-            alert(err.message)
+            setErrorMessage('Email ou senha incorretos.')
         }
     }
 
@@ -46,13 +47,21 @@ const Login = () => {
                     />
                     <input
                         type="password"
-                        placeholder="password"
+                        placeholder="Senha"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         required
                     />
                     <button type="submit">Entrar</button>
                 </form>
+
+                {errorMessage && (
+                    <p className="error-message">{errorMessage}</p>
+                )}
+
+                <p className="create-account-link">
+                    Ainda não possui uma conta? <a href="/register">Crie agora</a>.
+                </p>
                 <p className="bottom-info">UnB/FGA@2025.1</p>
             </div>
         </div>
