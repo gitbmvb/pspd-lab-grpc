@@ -1,25 +1,22 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Main from './pages/Main';
-import Login from './pages/Login';
-import Sidebar from './components/Sidebar/Sidebar';
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import ContextProvider from './context/ContextProvider'
 
 const App = () => {
+  const isAuthenticated = localStorage.getItem('token');
+
   return (
-    <Router>
+    <ContextProvider>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route
-          path="/main"
-          element={
-            <>
-              <Sidebar />
-              <Main />
-            </>
-          }
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-    </Router>
+    </ContextProvider>
   );
 };
 

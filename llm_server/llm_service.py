@@ -17,7 +17,7 @@ class LLMServiceServicer(service_pb2_grpc.LLMServiceServicer):
 
     def GenerateText(self, request, context):
         payload = {
-            "model": request.model or "llama3.2",
+            "model": request.model or "llama3.2:latest",
             "prompt": request.prompt,
             "stream": True,
             "options": {

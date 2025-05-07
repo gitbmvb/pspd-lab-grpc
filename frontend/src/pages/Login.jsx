@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { loginUser } from '../api'
 import './Login.css';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setpassword] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        const response = await fetch('http://localhost:8080/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (response.ok) {
-            alert('Login bem-sucedido!');
-        } else {
-            alert('Invalid credentials. Please try again.');
+        e.preventDefault()
+        try {
+            const data = await loginUser(email, password)
+            localStorage.setItem('token', data.token || 'sample')
+            await loginUser(email, password)
+            sessionStorage.setItem('userEmail', email)
+            alert('Login successful')
+            navigate('/dashboard')
+        } catch (err) {
+            alert(err.message)
         }
-    };
+    }
 
     return (
         <div className="login">
@@ -42,14 +41,14 @@ const Login = () => {
                         type="email"
                         placeholder="Email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                         required
                     />
                     <input
                         type="password"
                         placeholder="password"
                         value={password}
-                        onChange={(e) => setpassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                         required
                     />
                     <button type="submit">Entrar</button>
@@ -57,7 +56,7 @@ const Login = () => {
                 <p className="bottom-info">UnB/FGA@2025.1</p>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login
