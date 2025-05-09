@@ -33,7 +33,7 @@ func InitDBClient() {
 	
 	conn, err := grpc.DialContext(
 		ctx,
-		"127.0.0.1:50051",
+		"192.168.100.3:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
 	)
@@ -58,7 +58,7 @@ func InitLLMClient() {
 	
 	conn, err := grpc.DialContext(
 		ctx,
-		"127.0.0.1:50052",
+		"192.168.100.2:50052",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
 	)
