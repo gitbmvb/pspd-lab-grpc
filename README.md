@@ -114,6 +114,7 @@ LLM gRPC e LLM Ollama
 DataService gRPC & PostgreSQL 
 
 ## 🎥 Vídeo
+Link [aqui](https://youtu.be/EtK2Pj2PSEQ?si=jTJIiCnCfSOPIJa3)
 
 ## 👥 Autores
 
