@@ -14,7 +14,104 @@ Arquitetura proposta:
 
 ## 💾 Instalação
 
+#### Criar uma bridge virtual (br-lan);
+
+##### 1. Instale o pacote bridge-utils (se necessário)
+
+    sudo apt update
+    sudo apt install bridge-utils
+
+##### 2. Crie a bridge chamada br-lan
+
+    sudo brctl addbr br-lan
+
+##### 3. Ative a bridge
+
+    sudo ip link set br-lan up
+
+##### 4. Rodar o script para criação das interfaces
+
+    ./setup-bridge.sh
+
+#### Criação de Disco da VM
+
+Crie o disco da VM com o comando abaixo. Substitua X pelo número da VM e K pelo tamanho desejado (ex: 5G, 10G, etc):
+##### O comando:
+    sudo qemu-img create -f qcow2 /var/lib/libvirt/images/alpine-vmX.qcow2 K
+
+#### Instalação da VM Alpine
+
+    Use o virt-install para iniciar a instalação da VM com Alpine Linux:
+
+##### O comando:
+    sudo virt-install \
+    --name alpine-vmX \
+    --ram ? \
+    --vcpus=1 \
+    --os-variant=alpinelinux3.19 \
+    --network bridge=br-lan,model=virtio \
+    --network bridge=virbr0,model=virtio \
+    --graphics none \
+    --console pty,target_type=serial \
+    --cdrom /var/lib/libvirt/images/alpine-standard-3.19.1-x86_64.iso \
+    --disk path=/var/lib/libvirt/images/alpine-vmX.qcow2,format=qcow2
+
+    Substitua X pelo número da VM e ? pela quantidade de RAM em MB (ex: 512, 1024).
+
+#### Configuração Inicial do Alpine
+
+    Após iniciar a VM, use o comando setup-alpine dentro da VM.
+
+    Siga o processo interativo para configurar o sistema.
+
+    Após finalização, use reboot para reiniciar a máquina.
+
+    Repita o processo acima para cada VM necessária (ex: alpine-vm1, alpine-vm2, alpine-vm3).
+    5. Salvando a Configuração XML da VM
+
+#### Após configurar cada VM, salve seu XML com:
+
+    virsh dumpxml alpine-vmX > vmX.xml
+
+Esses arquivos XML serão úteis para recriar ou automatizar o controle das VMs com scripts.
+
+#### Dependências
+Dentro de cada vm é necessário que sejam instaladas as dependências do projeto via apk. 
+
 ## ⚙️ Uso
+
+#### Para cada módulo temos comandos específicos
+
+##### Frontend
+    cd frontend
+    npm run dev
+##### Backend
+    cd backend
+    go run main.go
+
+##### PostgreSQL
+    cd db
+    docker compose up --build
+
+##### LLM Server
+    cd llm_server
+    docker build -t llm_service .
+    docker run -v ollama:/root/.ollama -p 11434:11434 llm_service
+
+##### DataService gRPC 
+    cd db
+    python3 data_service.py
+
+##### LLM gRPC
+    cd llm_server
+    python3 llm_service.py
+
+#### VM1 
+Backend & Frontend
+#### VM2 
+LLM gRPC e LLM Ollama
+#### VM3
+DataService gRPC & PostgreSQL 
 
 ## 🎥 Vídeo
 
